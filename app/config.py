@@ -37,9 +37,5 @@ class Settings:
         if missing:
             raise ValueError(f"Missing environment variables: {', '.join(missing)}")
 
-
-# Create an instance of settings
 settings = Settings()
-
-# Validate environment variables
 settings.validate()

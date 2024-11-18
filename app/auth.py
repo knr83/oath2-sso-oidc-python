@@ -39,7 +39,7 @@ async def auth_callback(request: Request):
 
     if not auth_flow:
         # raise HTTPException(status_code=400, detail="Invalid or expired authorization flow")
-        return {"message": "ACCESS 123"}
+        return {"message": "ACCESS DENIED"}
 
     # Acquire the token using the stored flow and the provided authorization code
     result = client.acquire_token_by_auth_code_flow(auth_flow, dict(request.query_params))
@@ -51,7 +51,6 @@ async def auth_callback(request: Request):
         # Call Microsoft Graph to get user profile details
         headers = {"Authorization": f"Bearer {access_token}"}
         user_info_response = requests.get("https://graph.microsoft.com/v1.0/me", headers=headers)
-        # user_info = client.acquire_token_silent(["User.Read"], account=None)
 
         user_info = None
         if user_info_response.status_code == 200:
@@ -61,4 +60,4 @@ async def auth_callback(request: Request):
         else:
             return {"message": {user_info}}
     else:
-        return {"message": "ACCESS 345"}
+        return {"message": "ACCESS DENIED"}
