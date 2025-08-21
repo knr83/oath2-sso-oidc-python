@@ -1,4 +1,29 @@
-"venv/" 
-"__pycache__/" 
-.idea
+# Virtual env
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Env files
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Tests/artifacts
+.pytest_cache/
+.mypy_cache/
+.coverage
+coverage.xml
+
+# Logs/OS noise
+*.log
+Thumbs.db
+.DS_Store
+
+# Local config (if present)
 config.json

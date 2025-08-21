@@ -1,31 +1,30 @@
-import json
 import os
+import re
 
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Load configuration from JSON file
-def load_config(config_file='config.json'):
-    if os.path.isfile(config_file):
-        with open('config.json') as config_file:
-            config = json.load(config_file)
-            print("Configuration loaded")
-            return config
-    else:
-        raise ValueError(f"Configuration not found: config.json")
+# Environment variables (Azure AD):
+# AZURE_CLIENT_ID   – Application (client) ID from Azure App Registration.
+# AZURE_CLIENT_SECRET – App client secret (Certificates & secrets → New client secret → Value).
+# AZURE_TENANT_ID   – Directory (tenant) ID of your Azure AD.
+# REDIRECT_URI      – Redirect URI configured in App Registration (must match exactly).
+# ALLOWED_ORIGINS   – CORS origins list (comma/space separated), e.g. http://localhost:4200
+
 
 class Settings:
-    # AZURE_CLIENT_ID = os.getenv("AZURE_CLIENT_ID")
-    # AZURE_CLIENT_SECRET = os.getenv("AZURE_CLIENT_SECRET")
-    # AZURE_TENANT_ID = os.getenv("AZURE_TENANT_ID")
-    # REDIRECT_URI = os.getenv("REDIRECT_URI")
-    config = load_config()
-    AZURE_CLIENT_ID = config['azure_client_id']
-    AZURE_CLIENT_SECRET = config['azure_client_secret']
-    AZURE_TENANT_ID = config['azure_tenant_id']
-    REDIRECT_URI = config['redirect_uri']
+    AZURE_CLIENT_ID = os.getenv("AZURE_CLIENT_ID")
+    AZURE_CLIENT_SECRET = os.getenv("AZURE_CLIENT_SECRET")
+    AZURE_TENANT_ID = os.getenv("AZURE_TENANT_ID")
+    REDIRECT_URI = os.getenv("REDIRECT_URI")
+    ALLOWED_ORIGINS = [
+        o
+        for o in re.split(
+            r"[,\s]+", (os.getenv("ALLOWED_ORIGINS", "http://localhost:4200") or "").strip()
+        )
+        if o
+    ]
 
     # Method to validate the presence of all required environment variables
     @classmethod
